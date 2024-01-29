@@ -226,6 +226,19 @@ Route::group(
 
 // down here is v1
 
+// Auth controllers
+Route::group(
+    [
+        'namespace' => 'FireflyIII\Api\V1\Controllers\Auth',
+        'prefix'    => 'v1/auth',
+        'as'        => 'api.v1.auth.',
+    ],
+    static function (): void {
+        // Auth routes
+        Route::post('register', ['uses' => 'RegisterController@register', 'as' => 'register'])->withoutMiddleware('auth:api,sanctum');
+    }
+);
+
 /**
  * Autocomplete controllers
  */

@@ -27,14 +27,11 @@ namespace FireflyIII\Api\V1\Controllers\Auth;
 use FireflyIII\Api\V1\Controllers\Controller;
 use FireflyIII\Events\RegisteredUser;
 use FireflyIII\Exceptions\FireflyException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use FireflyIII\Support\Http\Controllers\CreateStuff;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use FireflyIII\User;
 use FireflyIII\Api\V1\Requests\Auth\RegisterRequest;
 use FireflyIII\Repositories\User\UserRepositoryInterface;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Class RegisterController

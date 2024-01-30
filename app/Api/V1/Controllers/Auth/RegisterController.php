@@ -30,15 +30,18 @@ use FireflyIII\Exceptions\FireflyException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use FireflyIII\Support\Http\Controllers\CreateStuff;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use FireflyIII\User;
 use FireflyIII\Api\V1\Requests\Auth\RegisterRequest;
 use FireflyIII\Repositories\User\UserRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class RegisterController
  */
 class RegisterController extends Controller
 {
+    use RegistersUsers;
     use CreateStuff;
     /**
      * Handle a registration request for the application.
@@ -60,13 +63,15 @@ class RegisterController extends Controller
         }
 
         $user              = $this->createUser($request->all());
-        app('log')->info(sprintf('Registered new user %s', $user->email));
+        // app('log')->info(sprintf('Registered new user %s', $user->email));
         event(new RegisteredUser($user));
+
+        $this->guard()->login($user);
 
         if ($validCode) {
             $repository->redeemCode($inviteCode);
         }
-        return response()->json(["message"=> (string)trans('firefly.registered')], 200);
+        return response()->json(["message"=> (string)trans('firefly.registered'), "token"=> $user->createToken('Token Name')->accessToken], 200);
     }
 
     /**
@@ -76,7 +81,6 @@ class RegisterController extends Controller
     {
         // is allowed to register?
         $allowRegistration = true;
-
         try {
             $singleUserMode = app('fireflyconfig')->get('single_user_mode', config('firefly.configuration.single_user_mode'))->data;
         } catch (ContainerExceptionInterface|NotFoundExceptionInterface $e) {

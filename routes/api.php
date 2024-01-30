@@ -236,6 +236,7 @@ Route::group(
     static function (): void {
         // Auth routes
         Route::post('register', ['uses' => 'RegisterController@register', 'as' => 'register'])->withoutMiddleware('auth:api,sanctum');
+        Route::post('login', ['uses' => 'LoginController@login', 'as' => 'login'])->withoutMiddleware('auth:api,sanctum');
     }
 );
 

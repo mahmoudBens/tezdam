@@ -47,7 +47,7 @@ class AcceptHeaders
     {
         $method       = $request->getMethod();
         $accepts      = ['application/x-www-form-urlencoded', 'application/json', 'application/vnd.api+json', 'application/octet-stream', '*/*'];
-        $contentTypes = ['application/x-www-form-urlencoded', 'application/json', 'application/vnd.api+json', 'application/octet-stream'];
+        $contentTypes = ['application/x-www-form-urlencoded', 'application/json', 'application/vnd.api+json', 'application/octet-stream', 'multipart/form-data'];
         $submitted    = (string)$request->header('Content-Type');
 
 

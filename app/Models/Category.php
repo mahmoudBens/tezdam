@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -43,6 +44,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @property \Illuminate\Support\Carbon|null      $updated_at
  * @property \Illuminate\Support\Carbon|null      $deleted_at
  * @property int                                  $user_id
+ * @property int                                  $category_id
  * @property string                               $name
  * @property Carbon                               $lastActivity
  * @property bool                                 $encrypted
@@ -89,7 +91,7 @@ class Category extends Model
             'encrypted'  => 'boolean',
         ];
     /** @var array Fields that can be filled */
-    protected $fillable = ['user_id', 'user_group_id', 'name'];
+    protected $fillable = ['user_id', 'user_group_id', 'name','category_id'];
     /** @var array Hidden from view */
     protected $hidden = ['encrypted'];
 
@@ -122,6 +124,22 @@ class Category extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function parent_category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function sub_categories(): HasMany
+    {
+        return $this->hasMany(Category::class);
     }
 
     /**

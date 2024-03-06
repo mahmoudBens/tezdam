@@ -44,8 +44,9 @@ class CategoryFormRequest extends FormRequest
     public function getCategoryData(): array
     {
         return [
-            'name'  => $this->convertString('name'),
-            'notes' => $this->stringWithNewlines('notes'),
+            'name'      => $this->convertString('name'),
+            'category'  => $this->convertString('category'),
+            'notes'     => $this->stringWithNewlines('notes'),
         ];
     }
 
@@ -57,16 +58,19 @@ class CategoryFormRequest extends FormRequest
     public function rules(): array
     {
         $nameRule = 'required|between:1,100|uniqueObjectForUser:categories,name';
+        $categoryRule = ['sometimes','nullable','exists:categories,name'];
         /** @var Category $category */
         $category = $this->route()->parameter('category');
 
         if (null !== $category) {
             $nameRule = 'required|between:1,100|uniqueObjectForUser:categories,name,' . $category->id;
+            $categoryRule = ['sometimes','nullable','exists:categories,name','not_in:'.$category->name];
         }
 
         // fixed
         return [
             'name' => $nameRule,
+            'category' => $categoryRule,
         ];
     }
 }

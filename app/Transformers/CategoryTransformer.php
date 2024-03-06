@@ -70,17 +70,18 @@ class CategoryTransformer extends AbstractTransformer
         $notes = $this->repository->getNoteText($category);
 
         return [
-            'id'         => (int)$category->id,
-            'created_at' => $category->created_at->toAtomString(),
-            'updated_at' => $category->updated_at->toAtomString(),
-            'name'       => $category->name,
-            'color'      => $category->color,
-            'nature'     => $category->nature,
-            'icon'       => $category->icon,
-            'notes'      => $notes,
-            'spent'      => $spent,
-            'earned'     => $earned,
-            'links'      => [
+            'id'                => (int)$category->id,
+            'created_at'        => $category->created_at->toAtomString(),
+            'updated_at'        => $category->updated_at->toAtomString(),
+            'name'              => $category->name,
+            'color'             => $category->color,
+            'nature'            => $category->nature,
+            'icon'              => $category->icon,
+            'parent_category'   => $category->parent_category?->name,
+            'notes'             => $notes,
+            'spent'             => $spent,
+            'earned'            => $earned,
+            'links'             => [
                 [
                     'rel' => 'self',
                     'uri' => '/categories/' . $category->id,

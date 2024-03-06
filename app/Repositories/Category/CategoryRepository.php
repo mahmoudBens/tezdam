@@ -113,7 +113,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function getCategories(): Collection
     {
-        return $this->user->categories()->with(['attachments'])->orderBy('name', 'ASC')->get();
+        return $this->user->categories()->with(['attachments','parent_category'])->orderBy('name', 'ASC')->get();
     }
 
     /**
@@ -189,8 +189,17 @@ class CategoryRepository implements CategoryRepositoryInterface
         if (array_key_exists('notes', $data) && '' === $data['notes']) {
             $this->removeNotes($category);
         }
+        
         if (array_key_exists('notes', $data) && '' !== $data['notes']) {
             $this->updateNotes($category, $data['notes']);
+        }
+
+        if (!array_key_exists('category', $data) || '' === $data['category']) {
+            $category->category_id = null;
+        }
+
+        if (array_key_exists('category', $data) && '' !== $data['category']) {
+            $category->category_id = Category::whereName($data['category'])->first()?->id;
         }
 
         if (array_key_exists('color', $data) && '' !== $data['color']) {

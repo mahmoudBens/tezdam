@@ -193,6 +193,21 @@ class CategoryRepository implements CategoryRepositoryInterface
             $this->updateNotes($category, $data['notes']);
         }
 
+        if (array_key_exists('color', $data) && '' !== $data['color']) {
+            $category->color = $data['color'];
+        }
+
+        if (array_key_exists('nature', $data) && '' !== $data['nature']) {
+            $category->nature = $data['nature'];
+        }
+
+        if (array_key_exists('icon', $data) && '' !== $data['icon']) {
+            $category->icon = $data['icon'];
+        }
+
+        $category->save();
+
+
         return $category;
     }
 

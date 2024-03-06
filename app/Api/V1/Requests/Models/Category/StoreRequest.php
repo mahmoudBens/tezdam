@@ -46,8 +46,11 @@ class StoreRequest extends FormRequest
     public function getAll(): array
     {
         return [
-            'name'  => $this->convertString('name'),
-            'notes' => $this->stringWithNewlines('notes'),
+            'name'      => $this->convertString('name'),
+            'color'     => $this->convertString('color'),
+            'nature'    => $this->convertString('nature'),
+            'icon'      => $this->convertString('icon'),
+            'notes'     => $this->stringWithNewlines('notes'),
         ];
     }
 
@@ -59,7 +62,10 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|between:1,100|uniqueObjectForUser:categories,name',
+            'name'      => 'required|between:1,100|uniqueObjectForUser:categories,name',
+            'color'     => ['sometimes','regex:/^#([a-f0-9]{6}|[a-f0-9]{3})$/i'],
+            'nature'    => 'sometimes|string',
+            'icon'      => 'sometimes|string',
         ];
     }
 }

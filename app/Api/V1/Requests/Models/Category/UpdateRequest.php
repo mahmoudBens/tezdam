@@ -47,6 +47,9 @@ class UpdateRequest extends FormRequest
     {
         $fields = [
             'name'  => ['name', 'convertString'],
+            'color'  => ['color', 'convertString'],
+            'nature'  => ['nature', 'convertString'],
+            'icon'  => ['icon', 'convertString'],
             'notes' => ['notes', 'stringWithNewlines'],
         ];
 
@@ -64,7 +67,10 @@ class UpdateRequest extends FormRequest
         $category = $this->route()->parameter('category');
 
         return [
-            'name' => sprintf('between:1,100|uniqueObjectForUser:categories,name,%d', $category->id),
+            'name'      => sprintf('between:1,100|uniqueObjectForUser:categories,name,%d', $category->id),
+            'color'     => ['sometimes','regex:/^#([a-f0-9]{6}|[a-f0-9]{3})$/i'],
+            'nature'    => 'sometimes|string',
+            'icon'      => 'sometimes|string',
         ];
     }
 }

@@ -33,6 +33,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
+use FireflyIII\Models\Category;
 
 /**
  * Class CreateController
@@ -77,8 +78,9 @@ class CreateController extends Controller
         }
         $request->session()->forget('categories.create.fromStore');
         $subTitle = (string)trans('firefly.create_new_category');
+        $categories = Category::all()->pluck('name','name')->toArray();
 
-        return view('categories.create', compact('subTitle'));
+        return view('categories.create', compact('subTitle', 'categories'));
     }
 
     /**

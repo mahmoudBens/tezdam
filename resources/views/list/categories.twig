@@ -29,6 +29,17 @@
                     <span class="fa fa-fw fa-paperclip"></span>
                 {% endif %}
             </td>
+            {% if category.parent_category.count() > 0 %}
+            <td data-value="{{ category.parent_category.name }}">
+                <a href="{{ route('categories.show', category.parent_category.id) }}" title="{{ category.parent_category.name }}">{{ category.parent_category.name }}</a>
+                {% if category.attachments.count() > 0 %}
+                    <span class="fa fa-fw fa-paperclip"></span>
+                {% endif %}
+            </td>
+            {% else %}
+            <td>
+            </td>
+            {% endif %}
             {% if category.lastActivity %}
                 <td class="hidden-sm hidden-xs" data-value="{{ category.lastActivity.format('Y-m-d H-i-s') }}">
                     {{ category.lastActivity.isoFormat(monthAndDayFormat) }}

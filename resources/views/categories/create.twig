@@ -26,6 +26,10 @@
                         <h3 class="box-title">{{ 'optionalFields'|_ }}</h3>
                     </div>
                     <div class="box-body">
+                        {# {{ ExpandedForm.text('color','#000000' ) }}
+                        {{ ExpandedForm.text('icon','fa fa-bookmark' ) }}
+                        {{ ExpandedForm.select('nature',natures,'none') }} #}
+                        {{ ExpandedForm.select('category',{'': 'Select a category'}|merge(categories),null) }}
                         {{ ExpandedForm.textarea('notes', null, {helpText: trans('firefly.field_supports_markdown')} ) }}
                         {{ ExpandedForm.file('attachments[]', {'multiple': 'multiple','helpText': trans('firefly.upload_max_file_size', {'size': uploadSize|filesize}) }) }}
                     </div>
@@ -54,4 +58,17 @@
 {% endblock %}
 {% block scripts %}
     <script type="text/javascript" src="v1/js/ff/budgets/create.js?v={{ FF_VERSION }}" nonce="{{ JS_NONCE }}"></script>
+    {# <script type="text/javascript" nonce="{{ JS_NONCE }}" >
+        $( document ).ready(function() {
+            $('input[name="color"]').attr('type', 'color')
+            let icon_class = $('input[name="icon"]').val()
+            $('input[name="icon"]').parent().append(`<div class="icon_show"><span class="${icon_class}"></span></div>`)
+        });
+        $( document ).on('change', 'input[name="icon"]', function(){
+            let new_icon_class = $('input[name="icon"]').val()
+            console.log(new_icon_class)
+            $('.icon_show').html(`<span class="${new_icon_class}"></span>`)
+        })
+    </script> #}
+    
 {% endblock %}

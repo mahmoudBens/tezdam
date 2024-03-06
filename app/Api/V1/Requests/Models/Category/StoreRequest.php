@@ -51,6 +51,7 @@ class StoreRequest extends FormRequest
             'nature'    => $this->convertString('nature'),
             'icon'      => $this->convertString('icon'),
             'notes'     => $this->stringWithNewlines('notes'),
+            'category'  => $this->convertString('category'),
         ];
     }
 
@@ -66,6 +67,7 @@ class StoreRequest extends FormRequest
             'color'     => ['sometimes','regex:/^#([a-f0-9]{6}|[a-f0-9]{3})$/i'],
             'nature'    => 'sometimes|string',
             'icon'      => 'sometimes|string',
+            'category'  => ['sometimes','nullable','exists:categories,name'],
         ];
     }
 }

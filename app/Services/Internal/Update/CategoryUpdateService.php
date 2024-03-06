@@ -76,7 +76,13 @@ class CategoryUpdateService
             $this->updateRuleActions($oldName, $data['name']);
             $this->updateRecurrences($oldName, $data['name']);
         }
+        if (!array_key_exists('category', $data) || '' === $data['category']) {
+            $category->category_id = null;
+        }
 
+        if (array_key_exists('category', $data) && '' !== $data['category']) {
+            $category->category_id = Category::whereName($data['category'])->first()?->id;
+        }
         if (array_key_exists('color', $data) && '' !== $data['color']) {
             $category->color = $data['color'];
         }

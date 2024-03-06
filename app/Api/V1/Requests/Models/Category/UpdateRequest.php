@@ -51,6 +51,7 @@ class UpdateRequest extends FormRequest
             'nature'  => ['nature', 'convertString'],
             'icon'  => ['icon', 'convertString'],
             'notes' => ['notes', 'stringWithNewlines'],
+            'category'  => ['category', 'convertString'],
         ];
 
         return $this->getAllData($fields);
@@ -71,6 +72,7 @@ class UpdateRequest extends FormRequest
             'color'     => ['sometimes','regex:/^#([a-f0-9]{6}|[a-f0-9]{3})$/i'],
             'nature'    => 'sometimes|string',
             'icon'      => 'sometimes|string',
+            'category'  =>['sometimes','nullable','exists:categories,name','not_in:'.$category->name],
         ];
     }
 }

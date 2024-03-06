@@ -17,6 +17,7 @@ return new class extends Migration
                     $table->string('nature', 50)->nullable();
                     $table->string('color', 50)->nullable();
                     $table->string('icon', 50)->nullable();
+                    $table->unsignedBigInteger('category_id')->nullable();
                 });
             } catch (QueryException $e) {
                 app('log')->error(sprintf('Could not add optional feilds to table "transaction_currency_user": %s', $e->getMessage()));
@@ -40,6 +41,9 @@ return new class extends Migration
                 }
                 if (Schema::hasColumn('categories', 'icon')) {
                     $table->dropColumn('icon');
+                }
+                if (Schema::hasColumn('categories', 'category_id')) {
+                    $table->dropColumn('category_id');
                 }
             });
         } catch (QueryException | ColumnDoesNotExist $e) {

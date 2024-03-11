@@ -6,6 +6,8 @@
     <tr>
         <th data-defaultsort="disabled">&nbsp;</th>
         <th data-defaultsign="az">{{ trans('list.name') }}</th>
+        <th data-defaultsign="az">{{ trans('list.parent') }}</th>
+        <th data-defaultsign="az">{{ trans('list.main') }}</th>
         <th data-defaultsign="month" class="hidden-sm hidden-xs">{{ trans('list.lastActivity') }}</th>
     </tr>
     </thead>
@@ -40,6 +42,11 @@
             <td>
             </td>
             {% endif %}
+            <td data-value="{{ category.is_main }}">
+                {% if category.is_main %}
+                    <span class="fa fa-check"></span> 
+                {% endif %}
+            </td>
             {% if category.lastActivity %}
                 <td class="hidden-sm hidden-xs" data-value="{{ category.lastActivity.format('Y-m-d H-i-s') }}">
                     {{ category.lastActivity.isoFormat(monthAndDayFormat) }}

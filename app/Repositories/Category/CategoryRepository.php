@@ -107,6 +107,16 @@ class CategoryRepository implements CategoryRepositoryInterface
     }
 
     /**
+     * Returns a list of all the main categories.
+     *
+     * @return Collection
+     */
+    public function getMainCategories(): Collection
+    {
+        return Category::where('is_main',1)->with(['attachments','parent_category'])->orderBy('name', 'ASC')->get();
+    }
+
+    /**
      * Returns a list of all the categories belonging to a user.
      *
      * @return Collection

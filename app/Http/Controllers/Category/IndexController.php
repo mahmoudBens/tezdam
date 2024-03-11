@@ -75,10 +75,11 @@ class IndexController extends Controller
     {
         $page       = 0 === (int)$request->get('page') ? 1 : (int)$request->get('page');
         $pageSize   = (int)app('preferences')->get('listPageSize', 50)->data;
-        $collection = $this->repository->getCategories();
+        $user_collection = $this->repository->getCategories();
+        $main_collection = $this->repository->getMainCategories();
+        $collection = $user_collection->merge($main_collection)->sortBy([['name', 'asc']]);
         $total      = $collection->count();
         $collection = $collection->slice(($page - 1) * $pageSize, $pageSize);
-
         $collection->each(
             function (Category $category) {
                 $category->lastActivity = $this->repository->lastUseDate($category, new Collection());

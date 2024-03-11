@@ -79,7 +79,6 @@ class CategoryRepository implements CategoryRepositoryInterface
      *
      * @return bool
      *
-
      */
     public function destroy(Category $category): bool
     {

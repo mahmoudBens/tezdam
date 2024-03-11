@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace FireflyIII\Http\Requests;
 
 use FireflyIII\Models\Category;
+use FireflyIII\Rules\IsNotMain;
 use FireflyIII\Support\Request\ChecksLogin;
 use FireflyIII\Support\Request\ConvertsDataTypes;
 use Illuminate\Foundation\Http\FormRequest;
@@ -57,13 +58,13 @@ class CategoryFormRequest extends FormRequest
      */
     public function rules(): array
     {
-        $nameRule = 'required|between:1,100|uniqueObjectForUser:categories,name';
+        $nameRule = ['required','between:1,100','uniqueObjectForUser:categories,name'];
         $categoryRule = ['sometimes','nullable','exists:categories,name'];
         /** @var Category $category */
         $category = $this->route()->parameter('category');
 
         if (null !== $category) {
-            $nameRule = 'required|between:1,100|uniqueObjectForUser:categories,name,' . $category->id;
+            $nameRule = ['required','between:1,100',new IsNotMain(Category::class),'uniqueObjectForUser:categories,name,' . $category->id];
             $categoryRule = ['sometimes','nullable','exists:categories,name','not_in:'.$category->name];
         }
 

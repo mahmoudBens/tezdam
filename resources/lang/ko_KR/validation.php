@@ -295,6 +295,7 @@ return [
 
     // no access to administration:
     'no_access_user_group'            => '이 관리에 대한 올바른 액세스 권한이 없습니다.',
+'main_categorie'                  => 'cannot update main categorie',
 ];
 
 /*

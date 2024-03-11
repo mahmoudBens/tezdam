@@ -295,6 +295,7 @@ return [
 
     // no access to administration:
     'no_access_user_group'            => 'Je hebt niet de juiste toegangsrechten voor deze administratie.',
+'main_categorie'                  => 'cannot update main categorie',
 ];
 
 /*

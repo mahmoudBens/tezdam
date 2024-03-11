@@ -295,6 +295,7 @@ return [
 
     // no access to administration:
     'no_access_user_group'            => 'No tens accés a aquesta administració.',
+'main_categorie'                  => 'cannot update main categorie',
 ];
 
 /*

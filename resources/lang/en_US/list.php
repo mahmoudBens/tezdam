@@ -155,6 +155,8 @@ return [
     'delivery'            => 'Delivery',
     'url'                 => 'URL',
     'secret'              => 'Secret',
+    'parent'              => 'Parent',
+    'main'                => 'Main',
 
 ];
 // Ignore this comment

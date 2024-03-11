@@ -185,6 +185,8 @@ return [
     'delivery'            => 'Lliurament',
     'url'                 => 'URL',
     'secret'              => 'Secret',
+    'parent'              => 'Parent',
+    'main'                => 'Main',
 
 ];
 /*

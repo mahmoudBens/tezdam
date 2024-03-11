@@ -185,6 +185,8 @@ return [
     'delivery'            => 'Delivery',
     'url'                 => 'URL адрес',
     'secret'              => 'Тайна',
+    'parent'              => 'Родител',
+    'main'                => 'Главен',
 
 ];
 /*

@@ -48,6 +48,7 @@ class CategoryFormRequest extends FormRequest
             'name'      => $this->convertString('name'),
             'category'  => $this->convertString('category'),
             'notes'     => $this->stringWithNewlines('notes'),
+            'is_main'    => $this->boolean('main_categorie'),
         ];
     }
 

@@ -73,6 +73,9 @@ class EditController extends Controller
      */
     public function edit(Request $request, Category $category)
     {
+        if($category->is_main && !$user->hasRole('owner')){
+            throw new NotFoundHttpException();
+        }
         $subTitle = (string)trans('firefly.edit_category', ['name' => $category->name]);
 
         // put previous url in session if not redirect from store (not "return_to_edit").

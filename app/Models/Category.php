@@ -119,6 +119,9 @@ class Category extends Model
             if ($user->hasRole('owner') && null !== $category) {
                 return $category;
             }
+            if (null !== $category && $category->is_main) {
+                return $category;
+            }
         }
         throw new NotFoundHttpException();
     }

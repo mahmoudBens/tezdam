@@ -47,6 +47,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @property int                                  $category_id
  * @property string                               $name
  * @property Carbon                               $lastActivity
+ * @property bool                                 $is_main
  * @property bool                                 $encrypted
  * @property-read Collection|Attachment[]         $attachments
  * @property-read int|null                        $attachments_count

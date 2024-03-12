@@ -77,6 +77,7 @@ class CategoryTransformer extends AbstractTransformer
             'color'             => $category->color,
             'nature'            => $category->nature,
             'icon'              => $category->icon,
+            'is_main'           => $category->is_main,
             'parent_category'   => $category->parent_category?->name,
             'notes'             => $notes,
             'spent'             => $spent,

@@ -31,6 +31,9 @@
                     </div>
                     <div class="box-body">
                         {{ ExpandedForm.select('category',{'': 'Select a category'}|merge(categories),preFilled.parent_category) }}
+                        {% if auth_user()["roles"][0]["name"] == "owner" %}
+                            {{ ExpandedForm.checkbox('main_categorie', 1, preFilled.main_category) }}
+                        {% endif %}
                         {{ ExpandedForm.textarea('notes', preFilled.notes, {helpText: trans('firefly.field_supports_markdown')} ) }}
                         {{ ExpandedForm.file('attachments[]', {'multiple': 'multiple','helpText': trans('firefly.upload_max_file_size', {'size': uploadSize|filesize}) }) }}
                     </div>

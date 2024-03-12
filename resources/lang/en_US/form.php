@@ -263,5 +263,6 @@ return [
     'webhook_delivery'          => 'Delivery',
     'webhook_response'          => 'Response',
     'webhook_trigger'           => 'Trigger',
+    'main_categorie'           => 'Main Categorie',
 ];
 // Ignore this comment

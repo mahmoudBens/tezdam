@@ -29,6 +29,9 @@
                         {# {{ ExpandedForm.text('color','#000000' ) }}
                         {{ ExpandedForm.text('icon','fa fa-bookmark' ) }}
                         {{ ExpandedForm.select('nature',natures,'none') }} #}
+                        {% if auth_user()["roles"][0]["name"] == "owner" %}
+                            {{ ExpandedForm.checkbox('main_categorie', 1) }}
+                        {% endif %}
                         {{ ExpandedForm.select('category',{'': 'Select a category'}|merge(categories),null) }}
                         {{ ExpandedForm.textarea('notes', null, {helpText: trans('firefly.field_supports_markdown')} ) }}
                         {{ ExpandedForm.file('attachments[]', {'multiple': 'multiple','helpText': trans('firefly.upload_max_file_size', {'size': uploadSize|filesize}) }) }}

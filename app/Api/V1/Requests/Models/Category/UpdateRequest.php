@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace FireflyIII\Api\V1\Requests\Models\Category;
 
 use FireflyIII\Models\Category;
+use FireflyIII\Rules\IsNotMain;
 use FireflyIII\Support\Request\ChecksLogin;
 use FireflyIII\Support\Request\ConvertsDataTypes;
 use Illuminate\Foundation\Http\FormRequest;
@@ -68,11 +69,11 @@ class UpdateRequest extends FormRequest
         $category = $this->route()->parameter('category');
 
         return [
-            'name'      => sprintf('between:1,100|uniqueObjectForUser:categories,name,%d', $category->id),
-            'color'     => ['sometimes','regex:/^#([a-f0-9]{6}|[a-f0-9]{3})$/i'],
-            'nature'    => 'sometimes|string',
-            'icon'      => 'sometimes|string',
-            'category'  =>['sometimes','nullable','exists:categories,name','not_in:'.$category->name],
+            'name'      => ['between:1,100',new IsNotMain(Category::class),'uniqueObjectForUser:categories,name,'.$category->id],
+            // 'color'     => ['sometimes','regex:/^#([a-f0-9]{6}|[a-f0-9]{3})$/i'],
+            // 'nature'    => 'sometimes|string',
+            // 'icon'      => 'sometimes|string',
+            // 'category'  =>['sometimes','nullable','exists:categories,name','not_in:'.$category->name],
         ];
     }
 }

@@ -69,12 +69,15 @@ class DeleteController extends Controller
      */
     public function delete(Category $category)
     {
-        $subTitle = (string)trans('firefly.delete_category', ['name' => $category->name]);
+        if(!$category->is_main){
 
-        // put previous url in session
-        $this->rememberPreviousUrl('categories.delete.url');
-
-        return view('categories.delete', compact('category', 'subTitle'));
+            $subTitle = (string)trans('firefly.delete_category', ['name' => $category->name]);
+    
+            // put previous url in session
+            $this->rememberPreviousUrl('categories.delete.url');
+    
+            return view('categories.delete', compact('category', 'subTitle'));
+        }
     }
 
     /**
@@ -87,12 +90,14 @@ class DeleteController extends Controller
      */
     public function destroy(Request $request, Category $category)
     {
-        $name = $category->name;
-        $this->repository->destroy($category);
+        if(!$category->is_main){
+            $name = $category->name;
+            $this->repository->destroy($category);
 
-        $request->session()->flash('success', (string)trans('firefly.deleted_category', ['name' => $name]));
-        app('preferences')->mark();
+            $request->session()->flash('success', (string)trans('firefly.deleted_category', ['name' => $name]));
+            app('preferences')->mark();
 
-        return redirect($this->getPreviousUrl('categories.delete.url'));
+            return redirect($this->getPreviousUrl('categories.delete.url'));
+        }
     }
 }

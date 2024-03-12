@@ -92,6 +92,13 @@ class CategoryUpdateService
         if (array_key_exists('icon', $data) && '' !== $data['icon']) {
             $category->icon = $data['icon'];
         }
+        if (array_key_exists('is_main', $data) && '' !== $data['is_main']) {
+            $category->user_id = $this->user->id;
+            $category->is_main = $data['is_main'];
+            if($data['is_main']){
+                $category->user_id = null;
+            }
+        }
         $category->save();
 
         $this->updateNotes($category, $data);

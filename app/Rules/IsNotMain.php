@@ -58,7 +58,7 @@ class IsNotMain implements Rule
     {
         $result = $this->model::where($attribute, $value)->get()->first();
 
-        if($result && $result->is_main){
+        if($result && $result->is_main && !auth()->user()->hasRole('owner')){
             return false;
         }
 

@@ -114,6 +114,10 @@ class Category extends Model
             if (null !== $category) {
                 return $category;
             }
+            $category = static::find($categoryId);
+            if ($user->hasRole('owner') && null !== $category) {
+                return $category;
+            }
         }
         throw new NotFoundHttpException();
     }

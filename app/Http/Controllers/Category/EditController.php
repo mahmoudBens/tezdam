@@ -82,9 +82,11 @@ class EditController extends Controller
         $request->session()->forget('categories.edit.fromUpdate');
 
         $categories = Category::whereNot('name',$category->name)->get()->pluck('name','name')->toArray();
+        
         $preFilled = [
             'notes' => $request->old('notes') ?? $this->repository->getNoteText($category),
             'parent_category' => $category->parent_category?->name,
+            'main_category' => $category->is_main == 1,
         ];
 
         return view('categories.edit', compact('category', 'subTitle', 'preFilled', 'categories'));

@@ -84,8 +84,12 @@ class EditController extends Controller
         }
         $request->session()->forget('categories.edit.fromUpdate');
 
-        $categories = Category::whereNot('name',$category->name)->get()->pluck('name','name')->toArray();
-        
+        // $categories = Category::whereNot('name',$category->name)->get()->pluck('name','name')->toArray();
+        $user_collection = $this->repository->getCategories();
+        $main_collection = $this->repository->getMainCategories();
+        $categories = $user_collection->merge($main_collection)->filter(function($item) use($category) {
+            return $item != $category->name;
+        })->sortBy([['name', 'asc']])->pluck('name','name')->toArray();
         $preFilled = [
             'notes' => $request->old('notes') ?? $this->repository->getNoteText($category),
             'parent_category' => $category->parent_category?->name,

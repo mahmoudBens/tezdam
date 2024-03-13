@@ -78,8 +78,9 @@ class CreateController extends Controller
         }
         $request->session()->forget('categories.create.fromStore');
         $subTitle = (string)trans('firefly.create_new_category');
-        $categories = Category::all()->pluck('name','name')->toArray();
-
+        $user_collection = $this->repository->getCategories();
+        $main_collection = $this->repository->getMainCategories();
+        $categories = $user_collection->merge($main_collection)->sortBy([['name', 'asc']])->pluck('name','name')->toArray();
         return view('categories.create', compact('subTitle', 'categories'));
     }
 

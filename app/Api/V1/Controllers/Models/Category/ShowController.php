@@ -76,9 +76,13 @@ class ShowController extends Controller
         $pageSize = $this->parameters->get('limit');
 
         // get list of budgets. Count it and split it.
-        $user_collection = $this->repository->getCategories();
-        $main_collection = $this->repository->getMainCategories();
-        $collection = $user_collection->merge($main_collection)->sortBy([['name', 'asc']]);
+        $user_collection = $this->repository->getCategories()->filter(function($item){
+            return $item->category_id == null;
+        });
+        $main_collection = $this->repository->getMainCategories()->filter(function($item){
+            return $item->category_id == null;
+        });
+        $collection = $user_collection->merge($main_collection)->sortBy([['id', 'asc']]);
 
         $count      = $collection->count();
         $categories = $collection->slice(($this->parameters->get('page') - 1) * $pageSize, $pageSize);

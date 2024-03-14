@@ -27,6 +27,7 @@ use FireflyIII\Models\Category;
 use FireflyIII\Repositories\Category\CategoryRepositoryInterface;
 use FireflyIII\Repositories\Category\OperationsRepositoryInterface;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class CategoryTransformer
@@ -45,6 +46,7 @@ class CategoryTransformer extends AbstractTransformer
     {
         $this->opsRepository = app(OperationsRepositoryInterface::class);
         $this->repository    = app(CategoryRepositoryInterface::class);
+        $this->user    = auth()->user();
     }
 
     /**
@@ -56,8 +58,8 @@ class CategoryTransformer extends AbstractTransformer
      */
     public function transform(Category $category): array
     {
-        $this->opsRepository->setUser($category->user);
-        $this->repository->setUser($category->user);
+        $this->opsRepository->setUser($this->user);
+        $this->repository->setUser($this->user);
 
         $spent  = [];
         $earned = [];
@@ -68,7 +70,8 @@ class CategoryTransformer extends AbstractTransformer
             $spent  = $this->beautify($this->opsRepository->sumExpenses($start, $end, null, new Collection([$category])));
         }
         $notes = $this->repository->getNoteText($category);
-
+        $sub_categories = $category->sub_categories()->where('user_id', $this->user->id)->get()->all();
+        
         return [
             'id'                => (int)$category->id,
             'created_at'        => $category->created_at->toAtomString(),
@@ -79,6 +82,9 @@ class CategoryTransformer extends AbstractTransformer
             'icon'              => $category->icon,
             'is_main'           => $category->is_main,
             'parent_category'   => $category->parent_category?->name,
+            'sub_category'      => array_map(function($item){
+                                        return $this->sub_categorie_data($item);
+                                    },$sub_categories),
             'notes'             => $notes,
             'spent'             => $spent,
             'earned'            => $earned,
@@ -105,5 +111,44 @@ class CategoryTransformer extends AbstractTransformer
         }
 
         return $return;
+    }
+
+    private function sub_categorie_data(Category $sub):array
+    {
+        
+        $spent  = [];
+        $earned = [];
+        $start  = $this->parameters->get('start');
+        $end    = $this->parameters->get('end');
+        if (null !== $start && null !== $end) {
+            $earned = $this->beautify($this->opsRepository->sumIncome($start, $end, null, new Collection([$sub])));
+            $spent  = $this->beautify($this->opsRepository->sumExpenses($start, $end, null, new Collection([$sub])));
+        }
+        $notes = $this->repository->getNoteText($sub);
+
+        $sub_categories = $sub->sub_categories()->where('user_id', $this->user->id)->get()->all();
+
+        return [
+            'id'                => (int)$sub->id,
+            'created_at'        => $sub->created_at->toAtomString(),
+            'updated_at'        => $sub->updated_at->toAtomString(),
+            'name'              => $sub->name,
+            'color'             => $sub->color,
+            'nature'            => $sub->nature,
+            'icon'              => $sub->icon,
+            'is_main'           => $sub->is_main,
+            'sub_category'      => array_map(function($item){
+                                    return $this->sub_categorie_data($item);
+                                },$sub_categories),
+            'notes'             => $notes,
+            'spent'             => $spent,
+            'earned'            => $earned,
+            'links'             => [
+                [
+                    'rel' => 'self',
+                    'uri' => '/categories/' . $sub->id,
+                ],
+            ],
+        ];
     }
 }

@@ -269,8 +269,8 @@ class TransactionJournalFactory
         $transactionFactory->setCurrency($currency);
         $transactionFactory->setForeignCurrency($foreignCurrency);
         $transactionFactory->setReconciled($row['reconciled'] ?? false);
-        $transactionFactory->setPaymentType($payment_type);
-        $transactionFactory->setPaid($paid);
+        $transactionFactory->setPaymentType($row['payment_type']);
+        $transactionFactory->setPaid($row['paid']);
         try {
             $transactionFactory->createPositive((string)$row['amount'], (string)$row['foreign_amount']);
         } catch (FireflyException $e) {

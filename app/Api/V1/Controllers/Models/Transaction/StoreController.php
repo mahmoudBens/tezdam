@@ -123,16 +123,29 @@ class StoreController extends Controller
             ->setTransactionGroup($transactionGroup)
             // all info needed for the API:
             ->withAPIInformation();
-
         $selectedGroup = $collector->getGroups()->first();
         if (null === $selectedGroup) {
             throw new FireflyException('200032: Cannot find transaction. Possibly, a rule deleted this transaction after its creation.');
+        }
+        
+        $custom_data = [];
+        foreach($selectedGroup['transactions'] as $index => $transaction){
+            $custom_data[$index] = [
+                'payment_type'  =>  $transaction['payment_type'],
+                'paid'          =>  $transaction['paid'],
+                ];
         }
         /** @var TransactionGroupTransformer $transformer */
         $transformer = app(TransactionGroupTransformer::class);
         $transformer->setParameters($this->parameters);
         $resource = new Item($selectedGroup, $transformer, 'transactions');
+        
+        $responce_data = $manager->createData($resource)->toArray();
+        foreach($responce_data['data']['attributes']['transactions'] as $index => $transaction){
+            $responce_data['data']['attributes']['transactions'][$index]['payment_type'] = $custom_data[$transaction['transaction_journal_id']]['payment_type'];
+            $responce_data['data']['attributes']['transactions'][$index]['paid'] = $custom_data[$transaction['transaction_journal_id']]['paid'];
+        }
 
-        return response()->json($manager->createData($resource)->toArray())->header('Content-Type', self::CONTENT_TYPE);
+        return response()->json($responce_data)->header('Content-Type', self::CONTENT_TYPE);
     }
 }

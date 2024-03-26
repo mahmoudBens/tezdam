@@ -129,7 +129,7 @@ class CategoryTransformer extends AbstractTransformer
         $sub_categories = $sub->sub_categories()->where('user_id', $this->user->id)->get()->all();
 
         return [
-            'id'                => (int)$sub->id,
+            'id'                => (string)$sub->id,
             'created_at'        => $sub->created_at->toAtomString(),
             'updated_at'        => $sub->updated_at->toAtomString(),
             'name'              => $sub->name,

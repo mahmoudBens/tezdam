@@ -47,6 +47,8 @@ class TransactionFactory
     private ?TransactionCurrency $foreignCurrency;
     private TransactionJournal   $journal;
     private bool                 $reconciled;
+    private string               $paid;
+    private string               $payment_type;
 
     /**
      * Constructor.
@@ -102,6 +104,8 @@ class TransactionFactory
             'foreign_amount'          => null,
             'foreign_currency_id'     => null,
             'identifier'              => 0,
+            'paid'                    => $this->paid,
+            'payment_type'            => $this->payment_type,
         ];
         try {
             /** @var Transaction|null $result */
@@ -259,5 +263,25 @@ class TransactionFactory
     public function setUser(User $user): void
     {
         // empty function.
+    }
+
+    /**
+     * @param string $data
+     *
+
+     */
+    public function setPaymentType(string $data): void
+    {
+        $this->payment_type = $data;
+    }
+
+    /**
+     * @param string $data
+     *
+
+     */
+    public function setPaid(string $data): void
+    {
+        $this->paid = $data;
     }
 }

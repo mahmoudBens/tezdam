@@ -51,6 +51,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string                          $date
  * @property string                          $max_date
  * @property string                          $amount
+ * @property string                          $payment_type
+ * @property string                          $paid
  * @property string|null                     $foreign_amount
  * @property int|null                        $foreign_currency_id
  * @property int                             $identifier
@@ -119,6 +121,8 @@ class Transaction extends Model
             'foreign_currency_id',
             'foreign_amount',
             'reconciled',
+            'payment_type',
+            'paid',
         ];
     /** @var array Hidden from view */
     protected $hidden = ['encrypted'];

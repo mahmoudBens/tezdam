@@ -124,6 +124,8 @@ class GroupCollector implements GroupCollectorInterface
             'source.id as source_transaction_id',
             'source.account_id as source_account_id',
             'source.reconciled',
+            'source.payment_type',
+            'source.paid as paid',
 
             # currency info:
             'source.amount as amount',
@@ -518,7 +520,7 @@ class GroupCollector implements GroupCollectorInterface
         }
 
         $result = $this->query->get($this->fields);
-
+        
         // now to parse this into an array.
         $collection = $this->parseArray($result);
 

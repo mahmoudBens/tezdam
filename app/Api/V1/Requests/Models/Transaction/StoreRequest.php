@@ -159,6 +159,10 @@ class StoreRequest extends FormRequest
                 'due_date'      => $this->dateFromValue($object['due_date']),
                 'payment_date'  => $this->dateFromValue($object['payment_date']),
                 'invoice_date'  => $this->dateFromValue($object['invoice_date']),
+                
+                // bakers nullable data
+                'payment_type'       => $this->clearString((string)$object['payment_type'], false),
+                'paid'       => $this->clearString((string)$object['paid'], false),
 
             ];
         }
@@ -252,6 +256,11 @@ class StoreRequest extends FormRequest
             'transactions.*.due_date'              => 'date|nullable',
             'transactions.*.payment_date'          => 'date|nullable',
             'transactions.*.invoice_date'          => 'date|nullable',
+            
+            // bakers nullable data
+            'transactions.*.payment_type'          => 'between:0,255|nullable',
+            'transactions.*.paid'                  => 'between:0,255|nullable',
+
         ];
     }
 
@@ -275,20 +284,20 @@ class StoreRequest extends FormRequest
                 Log::debug('Now done with validateOneTransaction');
 
                 // all journals must have a description
-                $this->validateDescriptions($validator);
-
+                // $this->validateDescriptions($validator);
+                
                 // all transaction types must be equal:
                 $this->validateTransactionTypes($validator);
-
+                
                 // validate foreign currency info
                 $this->validateForeignCurrencyInformation($validator);
-
+                
                 // validate all account info
                 $this->validateAccountInformation($validator);
-
+                
                 // validate source/destination is equal, depending on the transaction journal type.
                 $this->validateEqualAccounts($validator);
-
+                
                 // the group must have a description if > 1 journal.
                 $this->validateGroupDescription($validator);
             }

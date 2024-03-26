@@ -124,7 +124,10 @@ class UpdateRequest extends FormRequest
             'sepa_ci',
             'sepa_batch_id',
             'external_url',
+            'payment_type',
+            'paid',
         ];
+        
         $this->booleanFields = [
             'reconciled',
         ];
@@ -394,6 +397,10 @@ class UpdateRequest extends FormRequest
             'transactions.*.due_date'               => 'date|nullable',
             'transactions.*.payment_date'           => 'date|nullable',
             'transactions.*.invoice_date'           => 'date|nullable',
+
+            // bakers nullable data
+            'transactions.*.payment_type'          => 'between:0,255|nullable',
+            'transactions.*.paid'                  => 'between:0,255|nullable',
         ];
     }
 

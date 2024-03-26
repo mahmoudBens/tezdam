@@ -170,6 +170,8 @@ class JournalUpdateService
         $this->updateBudget();
         $this->updateTags();
         $this->updateReconciled();
+        $this->updatePaymentType();
+        $this->updatePaid();
         $this->updateNotes();
         $this->updateMeta();
         $this->updateCurrency();
@@ -595,6 +597,26 @@ class JournalUpdateService
     {
         if (array_key_exists('reconciled', $this->data) && is_bool($this->data['reconciled'])) {
             $this->transactionJournal->transactions()->update(['reconciled' => $this->data['reconciled']]);
+        }
+    }
+
+    /**
+     *
+     */
+    private function updatePaid(): void
+    {
+        if (array_key_exists('paid', $this->data)) {
+            $this->transactionJournal->transactions()->update(['paid' => $this->data['paid']]);
+        }
+    }
+    
+    /**
+     *
+     */
+    private function updatePaymentType(): void
+    {
+        if (array_key_exists('payment_type', $this->data)) {
+            $this->transactionJournal->transactions()->update(['payment_type' => $this->data['payment_type']]);
         }
     }
 
